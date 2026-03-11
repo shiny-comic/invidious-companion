@@ -25,6 +25,10 @@ const ESCAPE_SUBSTITUTIONS = {
     "\u00A0": "&nbsp;",
 };
 
+function cleanTimedTextCue(vtt: string): string {
+    return vtt.replace(/<\d{2}:\d{2}:\d{2}.\d{3}><c>([^<]+)<\/c>/g, "$1");
+}
+
 function shiftVttToCenter(vtt: string): string {
     const lines = vtt.split("\n");
     const updatedLines: string[] = [];
@@ -81,6 +85,7 @@ export async function handleTranscripts(
             });
         }
 
+        vttText = cleanTimedTextCue(vttText);
         vttText = shiftVttToCenter(vttText);
 
         return vttText;
